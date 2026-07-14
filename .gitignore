@@ -1,0 +1,20 @@
+# Secrets
+.env
+
+# Environments
+venv/
+.env/
+env/
+ENV/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# User-specific / Local IDE files
+.vscode/
+.idea/
+*.log
