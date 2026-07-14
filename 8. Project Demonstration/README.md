@@ -26,3 +26,23 @@ EduGenie provides a sleek, modern, single-page web dashboard using CSS glassmorp
 - **Input**: *"Pythagorean Theorem"*
 - **Action**: Click "Generate Quiz".
 - **Output**: Renders the multiple choice questions, and shows a "Show Answer Key" button which expands a drawer displaying the answers.
+
+---
+
+## 👤 Author / Team Members
+
+* **Thaamarapalli Meghamala** (Project Leader)
+  - **Email**: [tmeghamala531@gmail.com](mailto:tmeghamala531@gmail.com)
+  - **GitHub**: [Meghamala-531](https://github.com/Meghamala-531)
+
+* **Rama Krishna Vedantam**
+  - **Email**: [krishna.vssr@gmail.com](mailto:krishna.vssr@gmail.com)
+
+* **Sarala Avurthula**
+  - **Email**: [saralajaggarao03@gmail.com](mailto:saralajaggarao03@gmail.com)
+
+* **Prasanna Thadepalli**
+  - **Email**: [tadepalliprasanna81@gmail.com](mailto:tadepalliprasanna81@gmail.com)
+
+* **Jetti Tarun Kumar**
+  - **Email**: [jettitarunkumar@gmail.com](mailto:jettitarunkumar@gmail.com)
