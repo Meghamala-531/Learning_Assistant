@@ -45,4 +45,4 @@ EduGenie provides a sleek, modern, single-page web dashboard using CSS glassmorp
   - **Email**: [tadepalliprasanna81@gmail.com](mailto:tadepalliprasanna81@gmail.com)
 
 * **Jetti Tarun Kumar**
-  - **Email**: [jettitarunkumar@gmail.com](mailto:jettitarunkumar@gmail.com)
+  - **Email**: [jettitarunkumaryadav67@gmail.com](mailto:jettitarunkumaryadav67@gmail.com)

@@ -68,4 +68,4 @@ python -m pytest "6. Project Testing/tests"
   - **Email**: [tadepalliprasanna81@gmail.com](mailto:tadepalliprasanna81@gmail.com)
 
 * **Jetti Tarun Kumar**
-  - **Email**: [jettitarunkumar@gmail.com](mailto:jettitarunkumar@gmail.com)
+  - **Email**: [jettitarunkumaryadav67@gmail.com](mailto:jettitarunkumaryadav67@gmail.com)
