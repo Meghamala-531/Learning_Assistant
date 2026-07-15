@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduGenie — AI Educational Assistant</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Marked.js for Markdown Rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <sidebar>
+            <div class="brand">
+                <div class="brand-logo">
+                    <!-- SVG Open Book Logo -->
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 21l-8-4V5l8 4m0 12l8-4V5l-8 4m0 12V9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="brand-name">EduGenie</div>
+            </div>
+
+            <nav class="nav-menu">
+                <div class="nav-item active" onclick="switchTab('qa')" id="nav-qa">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Question Answering
+                </div>
+                <div class="nav-item" onclick="switchTab('explain')" id="nav-explain">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M9.663 17h4.673M12 3v1m6.364.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 0 1-2 2h0a2 2 0 0 1-2-2v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Concept Explainer
+                </div>
+                <div class="nav-item" onclick="switchTab('quiz')" id="nav-quiz">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Quiz Generator
+                </div>
+                <div class="nav-item" onclick="switchTab('summarize')" id="nav-summarize">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M4 6h16M4 12h16M4 18h7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Text Summarizer
+                </div>
+                <div class="nav-item" onclick="switchTab('learning-path')" id="nav-learning-path">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M9 20l-5.447-2.724A2 2 0 0 1 2.5 15.485V5.1a2 2 0 0 1 2.5-1.9L9 5m0 15l6-3m-6 3V5m6 12l5.447 2.724A2 2 0 0 0 21.5 17.9V7.6a2 2 0 0 0-2.5-1.9L15 5m0 12V5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Learning Paths
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="status-card">
+                    <div class="status-title">System Status</div>
+                    <div class="status-badge">
+                        <span class="status-dot"></span>
+                        Active
+                    </div>
+                </div>
+                <div class="status-card">
+                    <div class="status-title">Engine Fallback</div>
+                    <div style="font-size: 0.75rem; margin-top: 0.25rem;">Groq API &rarr; LaMini-Flan-T5</div>
+                </div>
+            </div>
+        </sidebar>
+
+        <!-- Main Content Panel -->
+        <main>
+            <div class="top-header">
+                <div class="header-title">
+                    <h1 id="page-title">Question Answering</h1>
+                    <p id="page-subtitle">Ask any academic question and get direct answers with rich learning context.</p>
+                </div>
+            </div>
+
+            <div class="feature-wrapper">
+                <!-- Input Card -->
+                <div class="glass-card">
+                    <!-- Form for Question Answering -->
+                    <form id="form-qa" class="tab-form" onsubmit="submitForm(event, 'qa', '/api/qa')">
+                        <div class="form-group">
+                            <label for="qa-input">What would you like to know?</label>
+                            <textarea id="qa-input" placeholder="e.g., Which is the largest ocean? Or why is the sky blue?" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Ask EduGenie
+                        </button>
+                    </form>
+
+                    <!-- Form for Concept Explainer -->
+                    <form id="form-explain" class="tab-form" style="display: none;" onsubmit="submitForm(event, 'explain', '/api/explain')">
+                        <div class="form-group">
+                            <label for="explain-input">What concept should we simplify?</label>
+                            <input type="text" id="explain-input" placeholder="e.g., Photosynthesis, Blockchain, Quantum Superposition" required>
+                        </div>
+                        <button type="submit" class="btn">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M9.663 17h4.673M12 3v1m6.364.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 0 1-2 2h0a2 2 0 0 1-2-2v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Explain Concept
+                        </button>
+                    </form>
+
+                    <!-- Form for Quiz Generator -->
+                    <form id="form-quiz" class="tab-form" style="display: none;" onsubmit="submitForm(event, 'quiz', '/api/quiz')">
+                        <div class="form-group">
+                            <label for="quiz-input">What topic do you want to test yourself on?</label>
+                            <input type="text" id="quiz-input" placeholder="e.g., Pythagorean Theorem, World War II, Basic Chemistry" required>
+                        </div>
+                        <button type="submit" class="btn">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Generate Quiz
+                        </button>
+                    </form>
+
+                    <!-- Form for Text Summarizer -->
+                    <form id="form-summarize" class="tab-form" style="display: none;" onsubmit="submitForm(event, 'summarize', '/api/summarize')">
+                        <div class="form-group">
+                            <label for="summarize-input">Paste educational material to summarize:</label>
+                            <textarea id="summarize-input" placeholder="Paste textbook pages, articles, or notes here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M4 6h16M4 12h16M4 18h7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Summarize Text
+                        </button>
+                    </form>
+
+                    <!-- Form for Learning Paths -->
+                    <form id="form-learning-path" class="tab-form" style="display: none;" onsubmit="submitForm(event, 'learning-path', '/api/learning-path')">
+                        <div class="form-group">
+                            <label for="learning-path-input">What subject or skill do you want a roadmap for?</label>
+                            <input type="text" id="learning-path-input" placeholder="e.g., SQL Databases, Machine Learning, Piano for Beginners" required>
+                        </div>
+                        <button type="submit" class="btn">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M9 20l-5.447-2.724A2 2 0 0 1 2.5 15.485V5.1a2 2 0 0 1 2.5-1.9L9 5m0 15l6-3m-6 3V5m6 12l5.447 2.724A2 2 0 0 0 21.5 17.9V7.6a2 2 0 0 0-2.5-1.9L15 5m0 12V5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Generate Roadmap
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Loading Spinner Panel -->
+                <div id="spinner" class="spinner-container glass-card">
+                    <div class="spinner"></div>
+                    <div style="font-weight: 500; font-family: var(--font-header);">Consulting EduGenie...</div>
+                    <div style="font-size: 0.85rem; color: var(--text-secondary);">This may take a moment if downloading the fallback model.</div>
+                </div>
+
+                <!-- Result Card -->
+                <div id="results" class="results-section glass-card">
+                    <div class="results-header">
+                        <div class="results-title">
+                            <svg viewBox="0 0 24 24" width="22" height="22" stroke="var(--primary)" fill="none" stroke-width="2">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Generated Response
+                        </div>
+                        <div id="model-badge" class="meta-badge">
+                            Active Model: Unknown
+                        </div>
+                    </div>
+                    <div id="results-body" class="results-body">
+                        <!-- Filled Dynamically -->
+                    </div>
+
+                    <!-- Interactive Quiz Extras -->
+                    <div id="quiz-extras" class="answer-key-section" style="display: none;">
+                        <button id="btn-toggle-key" class="btn" style="background: rgba(255,255,255,0.05); color: var(--text-primary); border: 1px solid var(--border-color); box-shadow: none;" onclick="toggleAnswerKey()">
+                            Show Answer Key
+                        </button>
+                        <div id="answer-key-box" class="answer-key-content">
+                            <!-- Answer Key content goes here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Client-side Routing and Form Submissions -->
+    <script>
+        const tabsInfo = {
+            qa: {
+                title: "Question Answering",
+                subtitle: "Ask any academic question and get direct answers with rich learning context."
+            },
+            explain: {
+                title: "Concept Explainer",
+                subtitle: "Deconstruct complex terms, formulas, or systems into simple, intuitive explanations."
+            },
+            quiz: {
+                title: "Quiz Generator",
+                subtitle: "Test your comprehension with custom topic-focused multiple choice questions."
+            },
+            summarize: {
+                title: "Text Summarizer",
+                subtitle: "Condense textbooks, essays, or notes into concise outlines and bulleted insights."
+            },
+            'learning-path': {
+                title: "Learning Paths",
+                subtitle: "Get a structured, step-by-step master plan with milestones, study tips, and resources."
+            }
+        };
+
+        let currentActiveTab = 'qa';
+
+        function switchTab(tabName) {
+            currentActiveTab = tabName;
+            
+            // Update active menu link
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(`nav-${tabName}`).classList.add('active');
+
+            // Update page headers
+            document.getElementById('page-title').textContent = tabsInfo[tabName].title;
+            document.getElementById('page-subtitle').textContent = tabsInfo[tabName].subtitle;
+
+            // Show active form, hide others
+            document.querySelectorAll('.tab-form').forEach(el => el.style.display = 'none');
+            document.getElementById(`form-${tabName}`).style.display = 'block';
+
+            // Reset results display
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('quiz-extras').style.display = 'none';
+        }
+
+        function toggleAnswerKey() {
+            const keyBox = document.getElementById('answer-key-box');
+            const btn = document.getElementById('btn-toggle-key');
+            if (keyBox.style.display === 'block') {
+                keyBox.style.display = 'none';
+                btn.textContent = 'Show Answer Key';
+            } else {
+                keyBox.style.display = 'block';
+                btn.textContent = 'Hide Answer Key';
+            }
+        }
+
+        async function submitForm(event, tabType, endpoint) {
+            event.preventDefault();
+            
+            // Hide previous results & show loading spinner
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('quiz-extras').style.display = 'none';
+            document.getElementById('answer-key-box').style.display = 'none';
+            document.getElementById('btn-toggle-key').textContent = 'Show Answer Key';
+            document.getElementById('spinner').style.display = 'flex';
+
+            // Gather inputs
+            let payload = {};
+            if (tabType === 'qa') {
+                payload = { question: document.getElementById('qa-input').value };
+            } else if (tabType === 'explain') {
+                payload = { concept: document.getElementById('explain-input').value };
+            } else if (tabType === 'quiz') {
+                payload = { topic: document.getElementById('quiz-input').value };
+            } else if (tabType === 'summarize') {
+                payload = { text: document.getElementById('summarize-input').value };
+            } else if (tabType === 'learning-path') {
+                payload = { topic: document.getElementById('learning-path-input').value };
+            }
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                document.getElementById('spinner').style.display = 'none';
+
+                if (!response.ok) {
+                    throw new Error(data.detail || 'An unknown error occurred.');
+                }
+
+                // Handle Badge
+                const modelBadge = document.getElementById('model-badge');
+                modelBadge.textContent = `Model: ${data.model_used}`;
+                if (data.model_used.includes('Groq')) {
+                    modelBadge.className = 'meta-badge groq';
+                } else {
+                    modelBadge.className = 'meta-badge local';
+                }
+
+                // Process output
+                let resultText = data.result;
+                
+                // If it is a quiz, split out the answer key if it exists
+                if (tabType === 'quiz') {
+                    let mainText = resultText;
+                    let answerKeyText = "";
+                    const splitKeywords = ["Answer Key:", "Answer Key", "ANSWERS", "Answers:"];
+                    
+                    for (const kw of splitKeywords) {
+                        const index = resultText.toLowerCase().lastIndexOf(kw.toLowerCase());
+                        if (index !== -1) {
+                            mainText = resultText.substring(0, index).trim();
+                            answerKeyText = resultText.substring(index).trim();
+                            break;
+                        }
+                    }
+
+                    document.getElementById('results-body').innerHTML = marked.parse(mainText);
+                    
+                    if (answerKeyText) {
+                        document.getElementById('answer-key-box').innerHTML = marked.parse(answerKeyText);
+                        document.getElementById('quiz-extras').style.display = 'block';
+                    }
+                } else {
+                    // Standard markdown rendering
+                    document.getElementById('results-body').innerHTML = marked.parse(resultText);
+                }
+
+                // Display Results
+                document.getElementById('results').style.display = 'block';
+                document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+
+            } catch (err) {
+                document.getElementById('spinner').style.display = 'none';
+                
+                // Show Error
+                const modelBadge = document.getElementById('model-badge');
+                modelBadge.textContent = 'Engine: Error';
+                modelBadge.className = 'meta-badge';
+                modelBadge.style.color = 'var(--danger)';
+                modelBadge.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+                
+                document.getElementById('results-body').innerHTML = `
+                    <div style="padding: 1rem; border-radius: var(--radius-md); background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #fca5a5;">
+                        <strong style="color: #ef4444;">Failed to get response:</strong> ${err.message}
+                    </div>
+                `;
+                document.getElementById('results').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
