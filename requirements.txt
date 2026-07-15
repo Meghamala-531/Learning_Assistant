@@ -1,6 +1,6 @@
 fastapi
 uvicorn
-transformers
+transformers==4.44.2
 torch
 groq
 jinja2
