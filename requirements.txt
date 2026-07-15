@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+transformers
+torch
+groq
+jinja2
+python-dotenv
+httpx
+pytest
+
+
